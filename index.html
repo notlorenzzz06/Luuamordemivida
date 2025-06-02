@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Para el Amor de mi Vida</title>
+  <!-- Fuente Dancing Script -->
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(#fddde6, #ffffff);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    h1 {
+      color: #c2185b;
+      margin-top: 30px;
+      font-size: 2em;
+      padding: 0 15px;
+    }
+    .carta, .galeria {
+      max-width: 90%;
+      margin: 20px auto;
+      background: #fff0f5;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      line-height: 1.6;
+      text-align: left;
+
+      /* Oculto por defecto */
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 1s ease;
+    }
+    .carta {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.3em;
+      color: #6a2c70;
+    }
+    .visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .galeria {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      text-align: center;
+    }
+    .galeria img {
+      width: 100%;
+      max-width: 180px;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+      cursor: pointer;
+    }
+    .galeria img:hover {
+      transform: scale(1.05);
+    }
+    #mostrarBtn {
+      margin-top: 60px;
+      padding: 15px 30px;
+      font-size: 1.2em;
+      background-color: #c2185b;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    #mostrarBtn:hover {
+      background-color: #a31544;
+    }
+    @media screen and (max-width: 480px) {
+      h1 {
+        font-size: 1.6em;
+      }
+      .carta {
+        font-size: 1.1em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Para el Amor de mi Vida ❤️</h1>
+
+  <!-- Botón para mostrar carta y fotos -->
+  <button id="mostrarBtn">Haz clic para ver mi carta y fotos 💌</button>
+
+  <!-- 🎵 Canción de fondo -->
+  <audio id="musica" loop controls>
+    <source src="nuestracancion.mp3" type="audio/mpeg" />
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
+  <!-- 💌 Carta -->
+  <div class="carta" id="carta">
+    <h2>Mi amor,</h2>
+    <p>
+      Desde que entraste en mi vida, todo ha cambiado para mejor. Tu sonrisa ilumina mis días,
+      tu voz me da paz, y tu amor me hace sentir la persona más afortunada del mundo.
+      Cada momento contigo es un regalo que atesoro con todo mi corazón.
+    </p>
+    <p>Gracias por existir. Te amo para siempre.</p>
+    <p><strong>Tu [tu nombre]</strong></p>
+  </div>
+
+  <!-- 📸 Galería de fotos -->
+  <div class="galeria" id="galeria">
+    <img src="image1.jpg" alt="Nosotros 1" />
+    <img src="image2.jpg" alt="Nosotros 2" />
+    <img src="image3.jpg" alt="Nosotros 3" />
+    <img src="image4.jpg" alt="Nosotros 4" />
+    <img src="image5.jpg" alt="Nosotros 5" />
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const boton = document.getElementById('mostrarBtn');
+      const carta = document.getElementById('carta');
+      const galeria = document.getElementById('galeria');
+      const musica = document.getElementById('musica');
+
+      boton.addEventListener('click', () => {
+        carta.classList.add('visible');
+        galeria.classList.add('visible');
+        boton.style.display = 'none';
+        musica.play();
+      });
+    });
+  </script>
+
+</body>
+</html>
+
