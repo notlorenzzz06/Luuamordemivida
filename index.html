@@ -4,22 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Para el Amor de mi Vida</title>
-
-  <!-- Fuentes -->
-  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&family=Great+Vibes&display=swap" rel="stylesheet" />
-
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #ffe4ec, #ffffff);
+      background: linear-gradient(#fddde6, #ffffff);
+      background-image: url('https://www.transparenttextures.com/patterns/pw-pattern.png');
+      background-repeat: repeat;
+      background-size: auto;
       margin: 0;
       padding: 0;
       text-align: center;
-      background-size: cover;
     }
 
     h1 {
-      font-family: 'Great Vibes', cursive;
       color: #c2185b;
       margin-top: 30px;
       font-size: 2em;
@@ -27,139 +25,201 @@
     }
 
     #mostrarBtn {
-      margin: 40px auto;
+      margin-top: 60px;
       padding: 15px 30px;
-      font-size: 1.4em;
+      font-size: 1.2em;
       background-color: #c2185b;
       color: white;
       border: none;
       border-radius: 12px;
       cursor: pointer;
       transition: background-color 0.3s;
-      animation: latido 2s infinite;
-      width: 80%;
-    }
-
-    @keyframes latido {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
     }
 
     #mostrarBtn:hover {
       background-color: #a31544;
     }
 
-    .carta, .galeria, .galeriaTexto {
+    .seccion {
       max-width: 90%;
       margin: 20px auto;
       background: #fff0f5;
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      line-height: 1.6;
-      text-align: left;
-      transform: translateY(30px);
+      text-align: center;
       opacity: 0;
       visibility: hidden;
-      transition: all 0.8s ease;
+      transition: opacity 1s ease;
     }
 
     .visible {
       opacity: 1;
       visibility: visible;
-      transform: translateY(0);
     }
 
     .carta {
       font-family: 'Dancing Script', cursive;
       font-size: 1.3em;
       color: #6a2c70;
+      text-align: left;
     }
 
-    .galeria {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
+    .subtitulo {
+      font-size: 1.5em;
+      color: #c2185b;
+      font-weight: bold;
       text-align: center;
+      margin-top: 10px;
     }
 
-    .galeria img {
+    .carrusel-container {
+      position: relative;
+      max-width: 300px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .carrusel {
+      display: flex;
+      transition: transform 0.4s ease-in-out;
+    }
+
+    .carrusel img {
       width: 100%;
-      max-width: 160px;
-      height: auto;
       border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      transition: transform 0.2s;
+      transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
     }
 
-    .galeria img:hover {
-      transform: scale(1.05) rotate(1deg);
-      box-shadow: 0 0 10px rgba(255, 105, 180, 0.4);
+    .carrusel img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 15px rgba(194, 24, 91, 0.6);
+    }
+
+    .boton-carrusel {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      font-size: 1.5em;
+      padding: 10px;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    .prev {
+      left: 0;
+    }
+
+    .next {
+      right: 0;
+    }
+
+    audio {
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(194, 24, 91, 0.3);
+      margin-top: 20px;
     }
 
     @media screen and (max-width: 480px) {
       h1 {
-        font-size: 1.8em;
+        font-size: 1.6em;
       }
-
       .carta {
-        font-size: 1.2em;
+        font-size: 1.1em;
       }
     }
   </style>
 </head>
 <body>
 
-  <h1>Para el Amor de mi Vida ❤️</h1>
+  <h1>Para el Amor de mi Vi❤️</h1>
 
   <button id="mostrarBtn">Haz clic para ver mi carta y fotos 💌</button>
 
-  <audio id="musica" loop>
+  <!-- GIFs de gatitos -->
+  <div class="seccion" id="gifGatitos">
+    <img src="gatito1.gif" alt="Gatito 1" style="width: 200px; border-radius: 15px; margin: 10px;" />
+    <img src="gatito2.gif" alt="Gatito 2" style="width: 200px; border-radius: 15px; margin: 10px;" />
+  </div>
+
+  <audio id="musica" loop controls>
     <source src="nuestracancion.mp3" type="audio/mpeg" />
+    Tu navegador no soporta audio HTML5.
   </audio>
 
-  <div class="carta" id="carta">
+  <!-- Carta -->
+  <div class="seccion carta" id="carta">
     <h2>Mi amor,</h2>
-    <p>
-      Desde que entraste en mi vida, todo ha cambiado para mejor. Tu sonrisa ilumina mis días,
+    <p>Desde que entraste en mi vida, todo ha cambiado para mejor. Tu sonrisa ilumina mis días,
       tu voz me da paz, y tu amor me hace sentir la persona más afortunada del mundo.
-      Cada momento contigo es un regalo que atesoro con todo mi corazón.
-    </p>
+      Cada momento contigo es un regalo que atesoro con todo mi corazón.</p>
     <p>Gracias por existir. Te amo para siempre.</p>
     <p><strong>Tu [tu nombre]</strong></p>
   </div>
 
-  <div class="galeriaTexto" id="galeriaTexto">
-    <h2>Nuestros momentos juntos 📸</h2>
-  </div>
-
-  <div class="galeria" id="galeria">
-    <img src="image1.jpg" alt="Nosotros 1" />
-    <img src="image2.jpg" alt="Nosotros 2" />
-    <img src="image3.jpg" alt="Nosotros 3" />
-    <img src="image4.jpg" alt="Nosotros 4" />
-    <img src="image5.jpg" alt="Nosotros 5" />
+  <!-- Texto y carrusel juntos -->
+  <div class="seccion" id="galeriaContenedor">
+    <div class="subtitulo">Nuestros momentos juntos 💖</div>
+    <div class="carrusel-container">
+      <button class="boton-carrusel prev">&#10094;</button>
+      <div class="carrusel" id="carrusel">
+        <img src="image1.jpg" alt="Nosotros 1" />
+        <img src="image2.jpg" alt="Nosotros 2" />
+        <img src="image3.jpg" alt="Nosotros 3" />
+        <img src="image4.jpg" alt="Nosotros 4" />
+        <img src="image5.jpg" alt="Nosotros 5" />
+      </div>
+      <button class="boton-carrusel next">&#10095;</button>
+    </div>
   </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const boton = document.getElementById('mostrarBtn');
       const carta = document.getElementById('carta');
-      const galeria = document.getElementById('galeria');
-      const galeriaTexto = document.getElementById('galeriaTexto');
+      const galeria = document.getElementById('galeriaContenedor');
+      const gifGatitos = document.getElementById('gifGatitos');
       const musica = document.getElementById('musica');
+
+      musica.play().catch(() => {
+        // Si el navegador bloquea el autoplay, no pasa nada
+      });
 
       boton.addEventListener('click', () => {
         carta.classList.add('visible');
         galeria.classList.add('visible');
-        galeriaTexto.classList.add('visible');
+        gifGatitos.classList.add('visible');
         boton.style.display = 'none';
-        musica.play();
       });
+
+      // Carrusel
+      const carrusel = document.getElementById('carrusel');
+      const prevBtn = document.querySelector('.prev');
+      const nextBtn = document.querySelector('.next');
+      let currentIndex = 0;
+
+      prevBtn.addEventListener('click', () => {
+        if (currentIndex > 0) currentIndex--;
+        else currentIndex = carrusel.children.length - 1;
+        updateCarousel();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        if (currentIndex < carrusel.children.length - 1) currentIndex++;
+        else currentIndex = 0;
+        updateCarousel();
+      });
+
+      function updateCarousel() {
+        carrusel.style.transform = `translateX(-${currentIndex * 100}%)`;
+      }
     });
   </script>
 
 </body>
 </html>
+
