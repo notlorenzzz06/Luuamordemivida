@@ -25,7 +25,7 @@
     }
 
     #mostrarBtn {
-      margin-top: 60px;
+      margin-top: 40px;
       padding: 15px 30px;
       font-size: 1.2em;
       background-color: #c2185b;
@@ -47,7 +47,7 @@
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
+      text-align: left;
       opacity: 0;
       visibility: hidden;
       transition: opacity 1s ease;
@@ -62,7 +62,6 @@
       font-family: 'Dancing Script', cursive;
       font-size: 1.3em;
       color: #6a2c70;
-      text-align: left;
     }
 
     .subtitulo {
@@ -75,26 +74,21 @@
 
     .carrusel-container {
       position: relative;
-      max-width: 100%;
+      max-width: 300px;
       margin: 0 auto;
       overflow: hidden;
     }
 
     .carrusel {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
       transition: transform 0.4s ease-in-out;
     }
 
     .carrusel img {
-      max-width: 100%;
-      height: auto;
+      width: 100%;
       border-radius: 10px;
       transition: transform 0.3s, box-shadow 0.3s;
       cursor: pointer;
-      flex-shrink: 0;
     }
 
     .carrusel img:hover {
@@ -129,6 +123,13 @@
       margin-top: 20px;
     }
 
+    img.gif {
+      width: 250px;
+      border-radius: 15px;
+      margin: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
     @media screen and (max-width: 480px) {
       h1 {
         font-size: 1.6em;
@@ -143,13 +144,14 @@
 
   <h1>Para el Amor de mi Vid❤️</h1>
 
-  <button id="mostrarBtn">Haz clic para ver mi carta y fotos 💌</button>
-
-  <!-- GIFs de gatitos -->
-  <div class="seccion" id="gifGatitos">
-    <img src="gatito1.gif" alt="Gatito 1" style="width: 200px; border-radius: 15px; margin: 10px;" />
-    <img src="gatito2.gif" alt="Gatito 2" style="width: 200px; border-radius: 15px; margin: 10px;" />
+  <!-- GATITOS: SIEMPRE VISIBLES -->
+  <div class="seccion visible">
+    <div class="subtitulo">Unos gatitos para alegrarte el día 🐾</div>
+    <img src="gif1.gif" alt="Gatito 1" class="gif" />
+    <img src="gif2.gif" alt="Gatito 2" class="gif" />
   </div>
+
+  <button id="mostrarBtn">Haz clic para ver mi carta y fotos 💌</button>
 
   <audio id="musica" loop controls>
     <source src="nuestracancion.mp3" type="audio/mpeg" />
@@ -160,71 +162,5 @@
   <div class="seccion carta" id="carta">
     <h2>Mi amor,</h2>
     <p>Desde que entraste en mi vida, todo ha cambiado para mejor. Tu sonrisa ilumina mis días,
-      tu voz me da paz, y tu amor me hace sentir la persona más afortunada del mundo.
-      Cada momento contigo es un regalo que atesoro con todo mi corazón.</p>
-    <p>Gracias por existir. Te amo para siempre.</p>
-    <p><strong>Tu [tu nombre]</strong></p>
-  </div>
+      tu voz me da paz, y tu amor me hace sentir la
 
-  <!-- Texto y carrusel juntos -->
-  <div class="seccion" id="galeriaContenedor">
-    <div class="subtitulo">Nuestros momentos juntos 💖</div>
-    <div class="carrusel-container">
-      <button class="boton-carrusel prev">&#10094;</button>
-      <div class="carrusel" id="carrusel">
-        <img src="image1.jpg" alt="Nosotros 1" />
-        <img src="image2.jpg" alt="Nosotros 2" />
-        <img src="image3.jpg" alt="Nosotros 3" />
-        <img src="image4.jpg" alt="Nosotros 4" />
-        <img src="image5.jpg" alt="Nosotros 5" />
-      </div>
-      <button class="boton-carrusel next">&#10095;</button>
-    </div>
-  </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const boton = document.getElementById('mostrarBtn');
-      const carta = document.getElementById('carta');
-      const galeria = document.getElementById('galeriaContenedor');
-      const gifGatitos = document.getElementById('gifGatitos');
-      const musica = document.getElementById('musica');
-
-      musica.play().catch(() => {
-        // Si el navegador bloquea el autoplay, no pasa nada
-      });
-
-      boton.addEventListener('click', () => {
-        carta.classList.add('visible');
-        galeria.classList.add('visible');
-        gifGatitos.classList.add('visible');
-        boton.style.display = 'none';
-      });
-
-      // Carrusel
-      const carrusel = document.getElementById('carrusel');
-      const prevBtn = document.querySelector('.prev');
-      const nextBtn = document.querySelector('.next');
-      let currentIndex = 0;
-
-      prevBtn.addEventListener('click', () => {
-        if (currentIndex > 0) currentIndex--;
-        else currentIndex = carrusel.children.length - 1;
-        updateCarousel();
-      });
-
-      nextBtn.addEventListener('click', () => {
-        if (currentIndex < carrusel.children.length - 1) currentIndex++;
-        else currentIndex = 0;
-        updateCarousel();
-      });
-
-      function updateCarousel() {
-        const offset = carrusel.children[currentIndex].offsetLeft;
-        carrusel.scrollTo({ left: offset, behavior: 'smooth' });
-      }
-    });
-  </script>
-
-</body>
-</html>
