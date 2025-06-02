@@ -47,7 +47,7 @@
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: center;
+      text-align: left;
       opacity: 0;
       visibility: hidden;
       transition: opacity 1s ease;
@@ -62,7 +62,6 @@
       font-family: 'Dancing Script', cursive;
       font-size: 1.3em;
       color: #6a2c70;
-      text-align: left;
     }
 
     .subtitulo {
@@ -75,7 +74,8 @@
 
     .carrusel-container {
       position: relative;
-      max-width: 300px;
+      width: 100%;
+      max-width: 350px;
       margin: 0 auto;
       overflow: hidden;
     }
@@ -83,13 +83,24 @@
     .carrusel {
       display: flex;
       transition: transform 0.4s ease-in-out;
+      gap: 10px;
     }
 
     .carrusel img {
-      width: 100%;
+      width: 100px;
+      height: auto;
       border-radius: 10px;
-      transition: transform 0.3s, box-shadow 0.3s;
-      cursor: pointer;
+      opacity: 0.5;
+      transition: all 0.4s ease;
+      transform: scale(0.9);
+      flex-shrink: 0;
+    }
+
+    .carrusel img.activa {
+      width: 100%;
+      opacity: 1;
+      transform: scale(1);
+      z-index: 1;
     }
 
     .carrusel img:hover {
@@ -107,7 +118,7 @@
       font-size: 1.5em;
       padding: 10px;
       cursor: pointer;
-      z-index: 1;
+      z-index: 2;
     }
 
     .prev {
@@ -124,12 +135,29 @@
       margin-top: 20px;
     }
 
+    .gifs-container {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .gifs-container img {
+      max-width: 150px;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
     @media screen and (max-width: 480px) {
       h1 {
         font-size: 1.6em;
       }
       .carta {
         font-size: 1.1em;
+      }
+      .carrusel img {
+        width: 80px;
       }
     }
   </style>
@@ -139,12 +167,6 @@
   <h1>Para el Amor de mi Vid❤️</h1>
 
   <button id="mostrarBtn">Haz clic para ver mi carta y fotos 💌</button>
-
-  <!-- GIFs de gatitos -->
-  <div class="seccion" id="gifGatitos">
-    <img src="gif1.gif" alt="Gatito 1" style="width: 200px; border-radius: 15px; margin: 10px;" />
-    <img src="gif2.gif" alt="Gatito 2" style="width: 200px; border-radius: 15px; margin: 10px;" />
-  </div>
 
   <audio id="musica" loop controls>
     <source src="nuestracancion.mp3" type="audio/mpeg" />
@@ -161,7 +183,7 @@
     <p><strong>Tu [tu nombre]</strong></p>
   </div>
 
-  <!-- Texto y carrusel juntos -->
+  <!-- Carrusel con previsualización -->
   <div class="seccion" id="galeriaContenedor">
     <div class="subtitulo">Nuestros momentos juntos 💖</div>
     <div class="carrusel-container">
@@ -177,26 +199,27 @@
     </div>
   </div>
 
+  <!-- Gifs bonitos -->
+  <div class="seccion gifs-container visible">
+    <img src="gatito1.gif" alt="Gatito bonito 1" />
+    <img src="gatito2.gif" alt="Gatito bonito 2" />
+  </div>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const boton = document.getElementById('mostrarBtn');
       const carta = document.getElementById('carta');
       const galeria = document.getElementById('galeriaContenedor');
-      const gifGatitos = document.getElementById('gifGatitos');
       const musica = document.getElementById('musica');
 
-      musica.play().catch(() => {
-        // Si el navegador bloquea el autoplay, no pasa nada
-      });
+      musica.play().catch(() => {});
 
       boton.addEventListener('click', () => {
         carta.classList.add('visible');
         galeria.classList.add('visible');
-        gifGatitos.classList.add('visible');
         boton.style.display = 'none';
       });
 
-      // Carrusel
       const carrusel = document.getElementById('carrusel');
       const prevBtn = document.querySelector('.prev');
       const nextBtn = document.querySelector('.next');
@@ -215,10 +238,22 @@
       });
 
       function updateCarousel() {
-        carrusel.style.transform = `translateX(-${currentIndex * 100}%)`;
+        const imagenes = carrusel.querySelectorAll('img');
+        imagenes.forEach((img, index) => {
+          img.classList.remove('activa');
+          if (index === currentIndex) {
+            img.classList.add('activa');
+          }
+        });
+
+        const offset = (currentIndex - 1) * (imagenes[0].offsetWidth + 10);
+        carrusel.style.transform = `translateX(-${offset}px)`;
       }
+
+      updateCarousel();
     });
   </script>
 
 </body>
 </html>
+
