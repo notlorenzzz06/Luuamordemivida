@@ -25,7 +25,7 @@
     }
 
     #mostrarBtn {
-      margin-top: 40px;
+      margin-top: 60px;
       padding: 15px 30px;
       font-size: 1.2em;
       background-color: #c2185b;
@@ -47,7 +47,7 @@
       padding: 20px;
       border-radius: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      text-align: left;
+      text-align: center;
       opacity: 0;
       visibility: hidden;
       transition: opacity 1s ease;
@@ -62,6 +62,7 @@
       font-family: 'Dancing Script', cursive;
       font-size: 1.3em;
       color: #6a2c70;
+      text-align: left;
     }
 
     .subtitulo {
@@ -74,68 +75,176 @@
 
     .carrusel-container {
       position: relative;
-      max-width: 300px;
+      max-width: 320px;
       margin: 0 auto;
-      overflow: hidden;
+      overflow: visible;
+      padding: 0 40px; /* espacio para botones en los lados */
     }
 
     .carrusel {
       display: flex;
       transition: transform 0.4s ease-in-out;
+      /* Para que las imágenes no se corten en móviles */
+      overflow: visible;
     }
 
     .carrusel img {
-      width: 100%;
-      border-radius: 10px;
-      transition: transform 0.3s, box-shadow 0.3s;
+      width: 240px;
+      margin: 0 10px;
+      border-radius: 50%;
+      transition: transform 0.3s ease, opacity 0.3s ease;
       cursor: pointer;
+      flex-shrink: 0;
+      opacity: 0.4;
+      filter: grayscale(30%);
     }
 
-    .carrusel img:hover {
+    /* Imagen central */
+    .carrusel img.current {
+      width: 280px;
+      opacity: 1;
+      filter: none;
       transform: scale(1.05);
-      box-shadow: 0 8px 15px rgba(194, 24, 91, 0.6);
+      box-shadow: 0 8px 20px rgba(194, 24, 91, 0.6);
+      z-index: 2;
+      position: relative;
     }
 
+    /* Imagen anterior y siguiente */
+    .carrusel img.prev,
+    .carrusel img.next {
+      opacity: 0.6;
+      filter: grayscale(10%);
+      transform: scale(0.9);
+      z-index: 1;
+      position: relative;
+    }
+
+    /* Botones carrusel */
     .boton-carrusel {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      background-color: rgba(0,0,0,0.5);
+      background-color: rgba(0,0,0,0.3);
       color: white;
       border: none;
-      font-size: 1.5em;
-      padding: 10px;
+      font-size: 2em;
+      padding: 6px 12px;
       cursor: pointer;
-      z-index: 1;
+      border-radius: 50%;
+      z-index: 3;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .boton-carrusel:hover {
+      background-color: rgba(0,0,0,0.6);
     }
 
     .prev {
-      left: 0;
+      left: 5px;
     }
 
     .next {
-      right: 0;
+      right: 5px;
     }
 
     audio {
       border-radius: 12px;
       box-shadow: 0 3px 10px rgba(194, 24, 91, 0.3);
       margin-top: 20px;
+      width: 90%;
+      max-width: 320px;
     }
 
-    img.gif {
-      width: 250px;
+    /* GIF gatitos responsivo */
+    #gifGatitos img {
+      width: 150px;
       border-radius: 15px;
-      margin: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin: 10px 5px;
     }
 
+    /* Texto carta más legible en móvil */
+    .carta {
+      font-size: 1.1em;
+      line-height: 1.5em;
+    }
+
+    /* Leyenda carrusel */
+    #caption {
+      margin-top: 10px;
+      font-weight: bold;
+      color: #c2185b;
+      font-size: 1.1em;
+      min-height: 24px;
+    }
+
+    /* Dots para carrusel */
+    #dotsContainer {
+      margin-top: 15px;
+    }
+    #dotsContainer span {
+      height: 12px;
+      width: 12px;
+      margin: 0 6px;
+      background-color: #ddd;
+      border-radius: 50%;
+      display: inline-block;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    #dotsContainer span.active {
+      background-color: #c2185b;
+    }
+
+    /* Media queries para móvil */
     @media screen and (max-width: 480px) {
       h1 {
         font-size: 1.6em;
+        margin-top: 20px;
       }
+
+      #mostrarBtn {
+        font-size: 1em;
+        padding: 12px 24px;
+        margin-top: 40px;
+      }
+
+      .seccion {
+        padding: 15px 10px;
+      }
+
       .carta {
-        font-size: 1.1em;
+        font-size: 1em;
+        text-align: justify;
+      }
+
+      .carrusel-container {
+        max-width: 100%;
+        padding: 0 30px;
+      }
+
+      .carrusel img {
+        width: 180px;
+        margin: 0 5px;
+      }
+
+      .carrusel img.current {
+        width: 220px;
+      }
+
+      .boton-carrusel {
+        font-size: 1.5em;
+        padding: 5px 10px;
+      }
+
+      audio {
+        width: 95%;
+      }
+
+      #gifGatitos img {
+        width: 120px;
+        margin: 8px 4px;
       }
     }
   </style>
@@ -144,14 +253,13 @@
 
   <h1>Para el Amor de mi Vid❤️</h1>
 
-  <!-- GATITOS: SIEMPRE VISIBLES -->
-  <div class="seccion visible">
-    <div class="subtitulo">Unos gatitos para alegrarte el día 🐾</div>
-    <img src="gif1.gif" alt="Gatito 1" class="gif" />
-    <img src="gif2.gif" alt="Gatito 2" class="gif" />
-  </div>
-
   <button id="mostrarBtn">Haz clic para ver mi carta y fotos 💌</button>
+
+  <!-- GIFs de gatitos -->
+  <div class="seccion" id="gifGatitos">
+    <img src="gatito1.gif" alt="Gatito 1" />
+    <img src="gatito2.gif" alt="Gatito 2" />
+  </div>
 
   <audio id="musica" loop controls>
     <source src="nuestracancion.mp3" type="audio/mpeg" />
@@ -162,5 +270,138 @@
   <div class="seccion carta" id="carta">
     <h2>Mi amor,</h2>
     <p>Desde que entraste en mi vida, todo ha cambiado para mejor. Tu sonrisa ilumina mis días,
-      tu voz me da paz, y tu amor me hace sentir la
+      tu voz me da paz, y tu amor me hace sentir la persona más afortunada del mundo.
+      Cada momento contigo es un regalo que atesoro con todo mi corazón.</p>
+    <p>Gracias por existir. Te amo para siempre.</p>
+    <p><strong>Tu [tu nombre]</strong></p>
+  </div>
 
+  <!-- Texto y carrusel juntos -->
+  <div class="seccion" id="galeriaContenedor">
+    <div class="subtitulo">Nuestros momentos juntos 💖</div>
+    <div class="carrusel-container">
+      <button class="boton-carrusel prev" aria-label="Imagen anterior">&#10094;</button>
+      <div class="carrusel" id="carrusel">
+        <img src="image1.jpg" alt="Nosotros 1" />
+        <img src="image2.jpg" alt="Nosotros 2" />
+        <img src="image3.jpg" alt="Nosotros 3" />
+        <img src="image4.jpg" alt="Nosotros 4" />
+        <img src="image5.jpg" alt="Nosotros 5" />
+      </div>
+      <button class="boton-carrusel next" aria-label="Imagen siguiente">&#10095;</button>
+    </div>
+    <div id="caption"></div>
+    <div id="dotsContainer"></div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const boton = document.getElementById('mostrarBtn');
+      const carta = document.getElementById('carta');
+      const galeria = document.getElementById('galeriaContenedor');
+      const gifGatitos = document.getElementById('gifGatitos');
+      const musica = document.getElementById('musica');
+
+      // Intenta reproducir música, no hay problema si no se puede autoplay
+      musica.play().catch(() => {});
+
+      boton.addEventListener('click', () => {
+        carta.classList.add('visible');
+        galeria.classList.add('visible');
+        gifGatitos.classList.add('visible');
+        boton.style.display = 'none';
+      });
+
+      // Carrusel
+      const carrusel = document.getElementById('carrusel');
+      const prevBtn = document.querySelector('.prev');
+      const nextBtn = document.querySelector('.next');
+      const captionDiv = document.getElementById('caption');
+      const dotsContainer = document.getElementById('dotsContainer');
+      const imgs = Array.from(carrusel.children);
+      const captions = [
+        "Nuestro primer viaje juntos",
+        "Momentos inolvidables",
+        "Risas y abrazos",
+        "Días de sol y amor",
+        "Para siempre tú y yo"
+      ];
+
+      let currentIndex = 0;
+
+      // Función para actualizar clases y estilos
+      function updateCarousel() {
+        // Mueve el carrusel para centrar la imagen actual
+        const offset = currentIndex * (imgs[0].offsetWidth + 20); // ancho + margin
+        carrusel.style.transform = `translateX(-${offset}px)`;
+
+        // Remueve clases prev, current, next
+        imgs.forEach(img => {
+          img.classList.remove('prev', 'current', 'next');
+        });
+
+        // Índices de prev y next circular
+        const prevIndex = (currentIndex === 0) ? imgs.length - 1 : currentIndex - 1;
+        const nextIndex = (currentIndex === imgs.length - 1) ? 0 : currentIndex + 1;
+
+        imgs[currentIndex].classList.add('current');
+        imgs[prevIndex].classList.add('prev');
+        imgs[nextIndex].classList.add('next');
+
+        // Actualiza caption
+        captionDiv.textContent = captions[currentIndex];
+
+        // Actualiza dots
+        updateDots();
+      }
+
+      // Dots
+      function createDots() {
+        dotsContainer.innerHTML = '';
+        imgs.forEach((_, i) => {
+          const dot = document.createElement('span');
+          dot.addEventListener('click', () => {
+            currentIndex = i;
+            updateCarousel();
+          });
+          dotsContainer.appendChild(dot);
+        });
+      }
+
+      function updateDots() {
+        Array.from(dotsContainer.children).forEach((dot, i) => {
+          dot.classList.toggle('active', i === currentIndex);
+        });
+      }
+
+      prevBtn.addEventListener('click', () => {
+        currentIndex = currentIndex === 0 ? imgs.length - 1 : currentIndex - 1;
+        updateCarousel();
+      });
+
+      nextBtn.addEventListener('click', () => {
+        currentIndex = currentIndex === imgs.length - 1 ? 0 : currentIndex + 1;
+        updateCarousel();
+      });
+
+      createDots();
+      updateCarousel();
+
+      // Auto-rotación con pausa al pasar el ratón (en móvil no se activa)
+      let autoRotate = setInterval(() => {
+        currentIndex = (currentIndex + 1) % imgs.length;
+        updateCarousel();
+      }, 5000);
+
+      carrusel.addEventListener('mouseenter', () => clearInterval(autoRotate));
+      carrusel.addEventListener('mouseleave', () => {
+        autoRotate = setInterval(() => {
+          currentIndex = (currentIndex + 1) % imgs.length;
+          updateCarousel();
+        }, 5000);
+      });
+    });
+  </script>
+
+</body>
+</html>
