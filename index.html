@@ -27,6 +27,13 @@
       padding: 0 15px;
     }
 
+    #contadorTiempo {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #a31544;
+      font-weight: bold;
+    }
+
     #mostrarBtn {
       margin-top: 60px;
       padding: 15px 30px;
@@ -293,6 +300,8 @@
 
   <h1>Te quiero en unos y ceros ♥</h1>
 
+  <p id="contadorTiempo">Tiempo juntos: <span id="meses">0</span> mes, <span id="dias">0</span> días y <span id="horas">0</span> horas</p>
+
   <!-- GIF antes de click -->
   <img id="gifPreClick" src="gatito1.gif" alt="Gif gatito antes de clicar" />
 
@@ -305,7 +314,7 @@
       tu voz me da paz, y tu amor me hace sentir la persona más afortunada del mundo.
       Cada momento contigo es un regalo que atesoro con todo mi corazón.</p>
     <p>Gracias por existir. Te amo para siempre.</p>
-     <p class="contador">5 / ∞</p>
+    <p class="contador">5 / ∞</p>
     <p><strong></strong></p>
   </div>
 
@@ -322,6 +331,8 @@
         <img src="image3.jpg" alt="Nosotros 3" />
         <img src="image4.jpg" alt="Nosotros 4" />
         <img src="image5.jpg" alt="Nosotros 5" />
+        <img src="image6.jpg" alt="Nosotros 6" />
+        <img src="image7.jpg" alt="Nosotros 7" />
       </div>
       <button class="boton-carrusel next" aria-label="Imagen siguiente">&#10095;</button>
     </div>
@@ -374,7 +385,9 @@
         "Momentos inolvidables",
         "Risas y abrazos",
         "Días de sol y amor",
-        "Para siempre tú y yo"
+        "Para siempre tú y yo",
+        "TE QUIEROOO",
+        "ERES EL AMOR DE MI VIDAAA"
       ];
 
       let currentIndex = 0;
@@ -392,47 +405,78 @@
         imgs[currentIndex].style.pointerEvents = 'auto';
 
         // Prev
-        let prevIndex = currentIndex - 1;
-        if (prevIndex < 0) prevIndex = imgs.length - 1;
+        let prevIndex = (currentIndex - 1 + imgs.length) % imgs.length;
         imgs[prevIndex].classList.add('prev');
         imgs[prevIndex].style.opacity = 0.6;
 
         // Next
-        let nextIndex = currentIndex + 1;
-        if (nextIndex >= imgs.length) nextIndex = 0;
+        let nextIndex = (currentIndex + 1) % imgs.length;
         imgs[nextIndex].classList.add('next');
         imgs[nextIndex].style.opacity = 0.6;
 
+        // Caption
         captionDiv.textContent = captions[currentIndex];
-        updateDots();
-      }
 
-      function updateDots() {
+        // Dots
         dotsContainer.innerHTML = '';
-        imgs.forEach((_, index) => {
+        for (let i = 0; i < imgs.length; i++) {
           const dot = document.createElement('span');
-          dot.classList.toggle('active', index === currentIndex);
+          dot.className = i === currentIndex ? 'active' : '';
           dot.addEventListener('click', () => {
-            currentIndex = index;
+            currentIndex = i;
             updateCarousel();
           });
           dotsContainer.appendChild(dot);
-        });
+        }
       }
 
       prevBtn.addEventListener('click', () => {
-        currentIndex--;
-        if (currentIndex < 0) currentIndex = imgs.length - 1;
+        currentIndex = (currentIndex - 1 + imgs.length) % imgs.length;
         updateCarousel();
       });
 
       nextBtn.addEventListener('click', () => {
-        currentIndex++;
-        if (currentIndex >= imgs.length) currentIndex = 0;
+        currentIndex = (currentIndex + 1) % imgs.length;
         updateCarousel();
       });
 
       updateCarousel();
+
+      // Contador desde fecha específica en meses, días y horas
+      const fechaInicio = new Date('2025-04-09T22:00:00');
+      const mesesSpan = document.getElementById('meses');
+      const diasSpan = document.getElementById('dias');
+      const horasSpan = document.getElementById('horas');
+
+      function actualizarContador() {
+        const ahora = new Date();
+
+        let años = ahora.getFullYear() - fechaInicio.getFullYear();
+        let meses = ahora.getMonth() - fechaInicio.getMonth();
+        let dias = ahora.getDate() - fechaInicio.getDate();
+        let horas = ahora.getHours() - fechaInicio.getHours();
+
+        if (horas < 0) {
+          horas += 24;
+          dias--;
+        }
+        if (dias < 0) {
+          const mesAnterior = new Date(ahora.getFullYear(), ahora.getMonth(), 0);
+          dias += mesAnterior.getDate();
+          meses--;
+        }
+        if (meses < 0) {
+          meses += 12;
+          años--;
+        }
+
+        mesesSpan.textContent = meses + años * 12;
+        diasSpan.textContent = dias;
+        horasSpan.textContent = horas;
+      }
+
+      actualizarContador();
+      setInterval(actualizarContador, 1000 * 60 * 60);
     });
   </script>
 </body>
