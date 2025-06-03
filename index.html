@@ -11,11 +11,10 @@
       background: linear-gradient(#fddde6, #ffffff);
       background-image: url('https://www.transparenttextures.com/patterns/pw-pattern.png');
       background-repeat: repeat;
-      background-size: auto;
       margin: 0;
       padding: 0;
       text-align: center;
-      overflow-x: hidden; /* evitar scroll horizontal */
+      overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       -webkit-text-size-adjust: 100%;
     }
@@ -76,61 +75,69 @@
       margin-top: 10px;
     }
 
-    /* Contenedor carrusel sin overflow hidden */
+    /* Contenedor carrusel */
     .carrusel-container {
       position: relative;
       max-width: 320px;
       margin: 0 auto;
-      padding: 0 40px;
       height: 180px;
-      -webkit-overflow-scrolling: touch; /* suavizado en iOS */
-      overflow: visible; /* muy importante para evitar cortes */
+      overflow: visible;
+      padding: 0 40px;
+      -webkit-overflow-scrolling: touch;
     }
 
     .carrusel {
-      display: flex;
-      transition: transform 0.4s ease-in-out;
-      height: 180px;
-      align-items: center;
-      user-select: none;
-      will-change: transform;
       position: relative;
-      left: 0;
+      width: 320px;
+      height: 180px;
+      margin: 0 auto;
+      user-select: none;
+      perspective: 1000px; /* para un poco de profundidad */
     }
 
     .carrusel img {
-      flex-shrink: 0;
+      position: absolute;
+      top: 0;
+      left: 50%;
       width: 240px;
       height: 180px;
       object-fit: cover;
       border-radius: 12px;
-      margin: 0 10px;
-      cursor: pointer;
-      opacity: 0.4;
+      opacity: 0;
       filter: grayscale(30%);
-      transition: opacity 0.3s ease, transform 0.3s ease;
+      transform-origin: center center;
+      transition: opacity 0.5s ease, transform 0.5s ease, filter 0.5s ease;
+      cursor: pointer;
       box-shadow: none;
-      position: relative;
-      z-index: 1;
+      user-select: none;
+      transform-style: preserve-3d;
     }
 
+    /* Imagen actual (centro) */
     .carrusel img.current {
       opacity: 1;
       filter: none;
-      transform: scale(1.05);
-      box-shadow: 0 8px 20px rgba(194, 24, 91, 0.6);
+      transform: translateX(-50%) scale(1) translateZ(0);
       z-index: 10;
-      margin: 0 10px;
+      box-shadow: 0 8px 20px rgba(194, 24, 91, 0.6);
     }
 
-    .carrusel img.prev,
+    /* Imagen previa (izquierda) */
+    .carrusel img.prev {
+      opacity: 0.6;
+      filter: grayscale(10%);
+      transform: translateX(calc(-50% - 150px)) scale(0.75) translateZ(-100px);
+      z-index: 5;
+      box-shadow: none;
+    }
+
+    /* Imagen siguiente (derecha) */
     .carrusel img.next {
       opacity: 0.6;
       filter: grayscale(10%);
-      transform: scale(0.85);
+      transform: translateX(calc(-50% + 150px)) scale(0.75) translateZ(-100px);
       z-index: 5;
-      margin-left: -80px;
-      margin-right: -80px;
+      box-shadow: none;
     }
 
     /* Botones carrusel */
@@ -168,13 +175,6 @@
       margin-top: 20px;
       width: 90%;
       max-width: 320px;
-    }
-
-    /* GIF gatitos responsivo */
-    #gifGatitos img {
-      width: 150px;
-      border-radius: 15px;
-      margin: 10px 5px;
     }
 
     /* Texto carta más legible en móvil */
@@ -234,40 +234,25 @@
 
       .carrusel-container {
         max-width: 100%;
-        padding: 0 20px;
         height: 140px;
+        padding: 0 20px;
       }
 
       .carrusel img {
         width: 180px;
         height: 140px;
-        margin: 0 5px;
       }
 
-      .carrusel img.current {
-        width: 210px;
-        height: 140px;
+      .carrusel img.prev {
+        transform: translateX(calc(-50% - 110px)) scale(0.75) translateZ(-100px);
       }
 
-      .carrusel img.prev,
       .carrusel img.next {
-        margin-left: -60px !important;
-        margin-right: -60px !important;
-        transform: scale(0.8);
-      }
-
-      .boton-carrusel {
-        font-size: 1.5em;
-        padding: 5px 10px;
+        transform: translateX(calc(-50% + 110px)) scale(0.75) translateZ(-100px);
       }
 
       audio {
         width: 95%;
-      }
-
-      #gifGatitos img {
-        width: 120px;
-        margin: 8px 4px;
       }
     }
   </style>
@@ -277,17 +262,6 @@
   <h1>Para el Amor de mi Vid❤️</h1>
 
   <button id="mostrarBtn">Haz clic para ver mi carta y fotos 💌</button>
-
-  <!-- GIFs de gatitos -->
-  <div class="seccion" id="gifGatitos">
-    <img src="gatito1.gif" alt="Gatito 1" />
-    <img src="gatito2.gif" alt="Gatito 2" />
-  </div>
-
-  <audio id="musica" loop controls>
-    <source src="nuestracancion.mp3" type="audio/mpeg" />
-    Tu navegador no soporta audio HTML5.
-  </audio>
 
   <!-- Carta -->
   <div class="seccion carta" id="carta">
@@ -299,7 +273,7 @@
     <p><strong>Tu [tu nombre]</strong></p>
   </div>
 
-  <!-- Texto y carrusel juntos -->
+  <!-- Carrusel -->
   <div class="seccion" id="galeriaContenedor">
     <div class="subtitulo">Nuestros momentos juntos 💖</div>
     <div class="carrusel-container">
@@ -317,12 +291,16 @@
     <div id="dotsContainer"></div>
   </div>
 
+  <audio id="musica" loop controls>
+    <source src="nuestracancion.mp3" type="audio/mpeg" />
+    Tu navegador no soporta audio HTML5.
+  </audio>
+
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const boton = document.getElementById('mostrarBtn');
       const carta = document.getElementById('carta');
       const galeria = document.getElementById('galeriaContenedor');
-      const gifGatitos = document.getElementById('gifGatitos');
       const musica = document.getElementById('musica');
 
       musica.play().catch(() => {});
@@ -330,7 +308,6 @@
       boton.addEventListener('click', () => {
         carta.classList.add('visible');
         galeria.classList.add('visible');
-        gifGatitos.classList.add('visible');
         boton.style.display = 'none';
       });
 
@@ -351,18 +328,30 @@
       let currentIndex = 0;
 
       function updateCarousel() {
-        const imageWidthWithMargin = 240 + 20;
-        let offset = currentIndex * imageWidthWithMargin - 40;
-        carrusel.style.transform = `translateX(-${offset}px)`;
+        imgs.forEach((img, index) => {
+          img.classList.remove('prev', 'current', 'next');
+          img.style.opacity = 0;
+          img.style.pointerEvents = 'none';
+        });
 
-        imgs.forEach(img => img.classList.remove('prev', 'current', 'next'));
-
-        const prevIndex = (currentIndex === 0) ? imgs.length - 1 : currentIndex - 1;
-        const nextIndex = (currentIndex === imgs.length - 1) ? 0 : currentIndex + 1;
-
+        // Current
         imgs[currentIndex].classList.add('current');
+        imgs[currentIndex].style.opacity = 1;
+        imgs[currentIndex].style.pointerEvents = 'auto';
+
+        // Prev
+        let prevIndex = currentIndex - 1;
+        if (prevIndex < 0) prevIndex = imgs.length -1;
         imgs[prevIndex].classList.add('prev');
+        imgs[prevIndex].style.opacity = 0.6;
+        imgs[prevIndex].style.pointerEvents = 'auto';
+
+        // Next
+        let nextIndex = currentIndex + 1;
+        if (nextIndex >= imgs.length) nextIndex = 0;
         imgs[nextIndex].classList.add('next');
+        imgs[nextIndex].style.opacity = 0.6;
+        imgs[nextIndex].style.pointerEvents = 'auto';
 
         captionDiv.textContent = captions[currentIndex];
         updateDots();
@@ -387,19 +376,19 @@
       }
 
       prevBtn.addEventListener('click', () => {
-        currentIndex = currentIndex === 0 ? imgs.length - 1 : currentIndex - 1;
+        currentIndex = (currentIndex === 0) ? imgs.length - 1 : currentIndex - 1;
         updateCarousel();
       });
 
       nextBtn.addEventListener('click', () => {
-        currentIndex = currentIndex === imgs.length - 1 ? 0 : currentIndex + 1;
+        currentIndex = (currentIndex === imgs.length - 1) ? 0 : currentIndex + 1;
         updateCarousel();
       });
 
       createDots();
       updateCarousel();
 
-      // Swipe support para móvil
+      // Swipe soporte para móvil
       let startX = 0;
       let isDragging = false;
 
@@ -419,15 +408,5 @@
           } else {
             prevBtn.click();
           }
-          isDragging = false;
-        }
-      });
 
-      carrusel.addEventListener('touchend', () => {
-        isDragging = false;
-      });
-    });
-  </script>
-
-</body>
 </html>
