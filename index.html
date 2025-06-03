@@ -15,6 +15,7 @@
       margin: 0;
       padding: 0;
       text-align: center;
+      overflow-x: hidden; /* Evita scroll horizontal */
     }
 
     h1 {
@@ -73,51 +74,56 @@
       margin-top: 10px;
     }
 
+    /* Contenedor del carrusel con recorte para mostrar parcialmente prev y next */
     .carrusel-container {
       position: relative;
       max-width: 320px;
       margin: 0 auto;
-      overflow: visible;
-      padding: 0 40px; /* espacio para botones en los lados */
+      overflow: hidden;
+      padding: 0 40px; /* espacio para botones */
+      height: 180px; /* altura fija acorde a imagen */
     }
 
     .carrusel {
       display: flex;
       transition: transform 0.4s ease-in-out;
-      /* Para que las imágenes no se corten en móviles */
-      overflow: visible;
+      height: 180px;
+      align-items: center;
+      user-select: none;
     }
 
     .carrusel img {
-      width: 240px;
-      margin: 0 10px;
-      border-radius: 50%;
-      transition: transform 0.3s ease, opacity 0.3s ease;
-      cursor: pointer;
       flex-shrink: 0;
+      width: 240px;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0 10px;
+      cursor: pointer;
       opacity: 0.4;
       filter: grayscale(30%);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      box-shadow: none;
     }
 
-    /* Imagen central */
     .carrusel img.current {
-      width: 280px;
       opacity: 1;
       filter: none;
       transform: scale(1.05);
       box-shadow: 0 8px 20px rgba(194, 24, 91, 0.6);
       z-index: 2;
       position: relative;
+      margin: 0 10px;
     }
 
-    /* Imagen anterior y siguiente */
     .carrusel img.prev,
     .carrusel img.next {
       opacity: 0.6;
       filter: grayscale(10%);
-      transform: scale(0.9);
+      transform: scale(0.85);
       z-index: 1;
       position: relative;
+      margin: 0 -80px; /* Se superponen un poco para simular recorte */
     }
 
     /* Botones carrusel */
@@ -221,16 +227,25 @@
 
       .carrusel-container {
         max-width: 100%;
-        padding: 0 30px;
+        padding: 0 20px;
+        height: 140px;
       }
 
       .carrusel img {
         width: 180px;
+        height: 140px;
         margin: 0 5px;
       }
 
       .carrusel img.current {
-        width: 220px;
+        width: 210px;
+        height: 140px;
+      }
+
+      .carrusel img.prev,
+      .carrusel img.next {
+        margin: 0 -60px;
+        transform: scale(0.8);
       }
 
       .boton-carrusel {
@@ -302,7 +317,6 @@
       const gifGatitos = document.getElementById('gifGatitos');
       const musica = document.getElementById('musica');
 
-      // Intenta reproducir música, no hay problema si no se puede autoplay
       musica.play().catch(() => {});
 
       boton.addEventListener('click', () => {
@@ -312,7 +326,6 @@
         boton.style.display = 'none';
       });
 
-      // Carrusel
       const carrusel = document.getElementById('carrusel');
       const prevBtn = document.querySelector('.prev');
       const nextBtn = document.querySelector('.next');
@@ -327,20 +340,30 @@
         "Para siempre tú y yo"
       ];
 
+      // Creamos un array "circular" para evitar problemas con el loop
+      // Se puede hacer una clonación para mejor loop
+      // Pero para simplicidad, vamos a manejar índices con modulo
+
       let currentIndex = 0;
 
-      // Función para actualizar clases y estilos
       function updateCarousel() {
-        // Mueve el carrusel para centrar la imagen actual
-        const offset = currentIndex * (imgs[0].offsetWidth + 20); // ancho + margin
+        // Calcula el desplazamiento para centrar la imagen actual:
+        // Cada imagen tiene width + margin 10*2 = 260px aprox.
+        // Queremos que la imagen actual quede centrada en el contenedor
+
+        // El contenedor tiene padding 40px a cada lado
+        // La idea: mover todo a la izquierda currentIndex * (240+20) menos 40 px
+
+        // Pero para que las imágenes prev y next se superpongan un poco,
+        // usamos margen negativa para las prev y next, así que mejor calcular desde 0 y usar translateX
+
+        const imageWidthWithMargin = 240 + 20;
+        let offset = currentIndex * imageWidthWithMargin - 40;
+
         carrusel.style.transform = `translateX(-${offset}px)`;
 
-        // Remueve clases prev, current, next
-        imgs.forEach(img => {
-          img.classList.remove('prev', 'current', 'next');
-        });
+        imgs.forEach(img => img.classList.remove('prev', 'current', 'next'));
 
-        // Índices de prev y next circular
         const prevIndex = (currentIndex === 0) ? imgs.length - 1 : currentIndex - 1;
         const nextIndex = (currentIndex === imgs.length - 1) ? 0 : currentIndex + 1;
 
@@ -348,14 +371,11 @@
         imgs[prevIndex].classList.add('prev');
         imgs[nextIndex].classList.add('next');
 
-        // Actualiza caption
         captionDiv.textContent = captions[currentIndex];
 
-        // Actualiza dots
         updateDots();
       }
 
-      // Dots
       function createDots() {
         dotsContainer.innerHTML = '';
         imgs.forEach((_, i) => {
@@ -387,7 +407,7 @@
       createDots();
       updateCarousel();
 
-      // Auto-rotación con pausa al pasar el ratón (en móvil no se activa)
+      // Auto-rotación, que se pausa al entrar y reanuda al salir
       let autoRotate = setInterval(() => {
         currentIndex = (currentIndex + 1) % imgs.length;
         updateCarousel();
