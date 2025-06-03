@@ -408,5 +408,15 @@
           } else {
             prevBtn.click();
           }
+          isDragging = false;
+        }
+      });
 
+      carrusel.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+    });
+  </script>
+
+</body>
 </html>
