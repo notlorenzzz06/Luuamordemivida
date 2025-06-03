@@ -403,8 +403,30 @@
       let startX = 0;
       let isDragging = false;
 
-      carrusel.add
+      carrusel.addEventListener('touchstart', e => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+      });
 
+      carrusel.addEventListener('touchmove', e => {
+        if (!isDragging) return;
+        const moveX = e.touches[0].clientX;
+        const diffX = startX - moveX;
+
+        if (Math.abs(diffX) > 50) {
+          if (diffX > 0) {
+            nextBtn.click();
+          } else {
+            prevBtn.click();
+          }
+          isDragging = false;
+        }
+      });
+
+      carrusel.addEventListener('touchend', () => {
+        isDragging = false;
+      });
+    });
   </script>
 
 </body>
